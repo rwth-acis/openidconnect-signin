@@ -7,7 +7,7 @@ context of your Web application in the user's browser remains the same.
 
 Example:
 ```
-<openidconnect-signin client-id="..." scopes="openid profile"></google-signin>
+<openidconnect-signin client-id="..." scopes="openid profile"></openidconnect-signin>
 ```
 
 ## Demo

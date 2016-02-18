@@ -20,9 +20,9 @@
     /**
      * AuthEngine does all interactions with gapi.auth2
      *
-     * It is tightly coupled with <google-signin-aware> element
+     * It is tightly coupled with <openidconnect-signin-aware> element
      * The elements configure AuthEngine.
-     * AuthEngine propagates all authentication events to all google-signin-aware elements
+     * AuthEngine propagates all authentication events to all openidconnect-signin-aware elements
      *
      * API used: https://developers.google.com/identity/sign-in/web/reference
      *
@@ -83,7 +83,7 @@
         },
 
         /**
-         * oauth2 argument, set by google-signin-aware
+         * oauth2 argument, set by openidconnect-signin-aware
          */
         _requestVisibleActions: '',
 
@@ -510,7 +510,7 @@ Example with offline:
 
                   // Signal all buttons to update their state based on the user.
                   console.log('we are here!');
-                  this.fire('google-signin-aware-success', []);
+                  this.fire('openidconnect-signin-aware-success', []);
 
                   storageEvent.target.removeEventListener('storage', onStorageEvent);
                   localStorage.removeItem("openidconnect-signin-performed");
