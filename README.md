@@ -16,5 +16,27 @@ Either [try it out yourself](https://rwth-acis.github.io/openidconnect-signin/) 
 
 ![openidconnect-signin in action](https://i.giphy.com/zkFD9Blr2cPxm.gif)
 
+## How to Use
+
+Just put an `<openidconnect-signin>` element to your page. This is how you add an event listener for signin actions:
+```
+document.querySelector('openidconnect-signin').addEventListener('openidconnect-signin-success', new function(event) {
+    // event.detail.access_token contains the access token
+    // event.detail.id_token contains the id token_
+});
+```
+
+If you want to get notified of signin actions within your custom elements, use the `openidconnect-signin-aware` element:
+```
+<openidconnect-signin-aware on-openidconnect-aware-success="handleSigninSuccess"></openidconnect-signin>
+```
+Through the event parameter of your `handleSigninSuccess` method you get the access token as described above. 
+
+Further documentation is available on the [component page](https://rwth-acis.github.io/openidconnect-signin/).
+
+## Credits
+
+This component was forked from https://github.com/GoogleWebComponents/google-signin but then detached because of the different internals.
+
 ## License
 Apache 2.0
