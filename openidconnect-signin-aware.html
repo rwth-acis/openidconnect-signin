@@ -510,8 +510,8 @@ Example with offline:
 
                   // Signal all buttons to update their state based on the user.
                   var authInfo = {
-                      'access_token': localStorage.openidconnect-signin-token,
-                      'id_token': localStorage.openidconnect-signin-idtoken }
+                      'access_token': localStorage['openidconnect-signin-token'],
+                      'id_token': localStorage['openidconnect-signin-idtoken'] }
                   this.fire('openidconnect-signin-aware-success', authInfo);
 
                   storageEvent.target.removeEventListener('storage', onStorageEvent);
