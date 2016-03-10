@@ -304,7 +304,7 @@
             popup.focus();
             popup.onload = function() {
                 //do your stuff here
-                console.log(this.location.href);
+                //console.log(this.location.href);
             };
 
             function onStorageEvent(storageEvent){
@@ -513,6 +513,7 @@ Example with offline:
                       'access_token': localStorage['openidconnect-signin-token'],
                       'id_token': localStorage['openidconnect-signin-idtoken'] }
                   this.fire('openidconnect-signin-aware-success', authInfo);
+                  this._setIsAuthorized(true);
 
                   storageEvent.target.removeEventListener('storage', onStorageEvent);
                   localStorage.removeItem("openidconnect-signin-performed");
@@ -533,7 +534,10 @@ Example with offline:
 
       /** signs user out */
       signOut: function() {
-        AuthEngine.signOut();
+          AuthEngine.signOut();
+          for (var i=0; i<AuthEngine.signinAwares.length; i++) {
+              AuthEngine.signinAwares[i]._setIsAuthorized(false);
+          }
 
           this._setSignedIn(false);
           this.fire('openidconnect-signin-aware-signed-out', []);

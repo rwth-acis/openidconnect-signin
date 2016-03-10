@@ -411,7 +411,7 @@ any apps you're building.
       },
 
       _observeSignedIn: function(newVal, oldVal) {
-          console.log('observed signedIn: ' + newVal);
+          //console.log('observed signedIn: ' + newVal);
         if (newVal) {
           if (this.needAdditionalAuth)
             this.fire('openidconnect-signin-necessary');
