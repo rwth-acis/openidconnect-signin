@@ -293,7 +293,7 @@
 
             var popupWidth = Math.min(650, window.screen.width-20);
             var popupHeight = Math.min(600, window.screen.height-30);
-            var url = OIDC.login({scope : 'openid profile',
+            var url = OIDC.login({scope : 'openid profile email',
                         response_type : 'token'
                     }
             );
