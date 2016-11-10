@@ -1,6 +1,6 @@
 {
   "name": "openidconnect-signin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Web components to authenticate with OpenID Connect providers",
   "homepage": "https://rwth-acis.github.io/openidconnect-signin",
   "main": "openidconnect-signin.html",
