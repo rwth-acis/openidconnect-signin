@@ -4,12 +4,14 @@
 <link rel="import" href="../font-roboto/roboto.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
-<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="auth-icons.html">
+<link rel="import" href="openidconnect-signin-styles.html">
 
 <dom-module id="openidconnect-signin">
-  <link rel="import" type="css" href="openidconnect-signin.css">
   <template>
+    <style include="openidconnect-signin-styles iron-positioning"></style>
+
     <openidconnect-signin-aware id="aware"
       app-package-name="{{appPackageName}}"
       server="{{server}}"
@@ -30,7 +32,7 @@
 
       <paper-ripple id="ripple" class="fit"></paper-ripple>
       <!-- this div is needed to position the ripple behind text content -->
-      <div relative layout horizontal center-center>
+      <div>
         <template is="dom-if" if="{{_computeButtonIsSignIn(signedIn, needAdditionalAuth)}}">
           <div class="button-content signIn" tabindex="0"
               on-click="signIn" on-keydown="_signInKeyPress">
@@ -173,39 +175,50 @@ any apps you're building.
 
       is: 'openidconnect-signin',
 
-    /**
-     * Fired when user is signed in.
-     * @event openidconnect-signin-success
-     */
+      /**
+       * Fired when user is signed in.
+       * @event openidconnect-signin-success
+       */
 
-    /**
-     * Fired when the user is signed-out.
-     * @event openidconnect-signed-out
-     */
+      /**
+       * Fired when the user is signed-out.
+       * @event openidconnect-signed-out
+       */
 
-    /**
-     * Fired if user requires additional authorization
-     * @event openidconnect-signin-necessary
-     */
+      /**
+       * Fired if user requires additional authorization
+       * @event openidconnect-signin-necessary
+       */
 
-    /**
-     * Fired when signed in, and scope has been authorized
-     * @param {Object} result Authorization result.
-     * @event openidconnect-signin-aware-success
-     */
+      /**
+       * Fired when signed in, and scope has been authorized
+       * @param {Object} result Authorization result.
+       * @event openidconnect-signin-aware-success
+       */
 
-    /**
-     * Fired when an offline authorization is successful.
-     * @event openidconnect-signin-offline-success
-     * @param {Object} detail
-     * @param {string} detail.code The one-time authorization code from your OpenID Connect provider.
-     *     Your application can exchange this for an `access_token` and `refresh_token`
-     */
+      /**
+       * Fired when there is an error during the signin flow.
+       * @param {Object} detail The error object returned from the OAuth 2 flow.
+       * @event openidconnect-signin-aware-error
+       */
 
-    /**
-     * Fired when this scope is not authorized
-     * @event openidconnect-signin-aware-signed-out
-     */
+      /**
+       * Fired when an offline authorization is successful.
+       * @event openidconnect-signin-offline-success
+       * @param {Object} detail
+       * @param {string} detail.code The one-time authorization code from your OpenID Connect provider.
+       *     Your application can exchange this for an `access_token` and `refresh_token`
+       */
+
+      /**
+       * Fired when this scope is not authorized
+       * @event openidconnect-signin-aware-signed-out
+       */
+
+      /**
+       * This block is needed so the previous @param is not assigned to the next property.
+       */
+
       properties: {
 
         /**
@@ -216,7 +229,7 @@ any apps you're building.
         },
 
         /**
-         * an OpenID Connect provider clientId reference
+         * An OpenID Connect provider clientId reference
          */
         clientId: {
           type: String,
@@ -240,7 +253,7 @@ any apps you're building.
          *
          * Available options: short, standard, tall.
          *
-         * @type {HeightValue}
+         * @type {string}
          */
         height: {
           type: String,
@@ -335,7 +348,7 @@ any apps you're building.
          * Available options: light, dark.
          *
          * @attribute theme
-         * @type {ThemeValue}
+         * @type {string}
          * @default 'dark'
          */
         theme: {
@@ -348,7 +361,7 @@ any apps you're building.
          *
          * Available options: iconOnly, standard, wide.
          *
-         * @type {WidthValue}
+         * @type {string}
          */
         width: {
           type: String,
@@ -365,6 +378,7 @@ any apps you're building.
          */
         needAdditionalAuth: {
           type: Boolean,
+          notify: true,
           value: false
         },
 
@@ -411,7 +425,6 @@ any apps you're building.
       },
 
       _observeSignedIn: function(newVal, oldVal) {
-          //console.log('observed signedIn: ' + newVal);
         if (newVal) {
           if (this.needAdditionalAuth)
             this.fire('openidconnect-signin-necessary');
