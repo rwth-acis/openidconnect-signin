@@ -9,7 +9,7 @@
     "Addy Osmani",
     "Randy Merrill"
   ],
-  "license": "Apache-2",
+  "license": "Apache-2.0",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -20,6 +20,7 @@
   ],
   "keywords": [
     "web-component",
+    "web-components",
     "polymer",
     "sign-in",
     "openid-connect",
@@ -29,7 +30,8 @@
     "polymer": "Polymer/polymer#^1.0.0",
     "font-roboto": "PolymerElements/font-roboto#^1.0.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.0",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.0",
     "paper-ripple": "PolymerElements/paper-ripple#^1.0.0",
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "layers-icons": "learning-layers/layers-icons#^1.0.0"
