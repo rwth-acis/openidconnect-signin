@@ -512,7 +512,8 @@ Example with offline:
             // Signal all buttons to update their state based on the user.
             var authInfo = {
               'access_token': localStorage['openidconnect-signin-token'],
-              'id_token': localStorage['openidconnect-signin-idtoken'] }
+              'id_token': localStorage['openidconnect-signin-idtoken']
+            };
             this.fire('openidconnect-signin-aware-success', authInfo);
             this._setIsAuthorized(true);
 
@@ -522,6 +523,20 @@ Example with offline:
         }
 
         window.addEventListener('storage', onStorageEvent.bind(this), false);
+
+        // check if we are still logged in
+        if (localStorage['openidconnect-signin-token'] && localStorage['openidconnect-signin-idtoken']) {
+          this._setSignedIn(true); //TODO
+          this._setNeedAdditionalAuth(false); //TODO
+
+          // Signal all buttons to update their state based on the user.
+          var authInfo = {
+            'access_token': localStorage['openidconnect-signin-token'],
+            'id_token': localStorage['openidconnect-signin-idtoken']
+          };
+          this.fire('openidconnect-signin-aware-success', authInfo);
+          this._setIsAuthorized(true);
+        }
       },
 
       detached: function() {
