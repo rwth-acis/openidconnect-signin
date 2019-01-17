@@ -9,7 +9,7 @@
   "license": "MIT",
   "main": "openidconnect-signin.js",
   "dependencies": {
-    "@polymer/lit-element": "^0.6.3",
+    "lit-element": "^2.0.0-rc.2",
     "oidc-client": "^1.5.4"
   },
   "devDependencies": {
