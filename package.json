@@ -9,10 +9,10 @@
   "license": "MIT",
   "main": "openidconnect-signin.js",
   "dependencies": {
-    "lit-element": "^2.0.0-rc.2",
-    "oidc-client": "^1.5.4"
+    "lit-element": "^2.0.0",
+    "oidc-client": "^1.6.1"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "^2.0.0"
+    "@webcomponents/webcomponentsjs": "^2.2.7"
   }
 }
