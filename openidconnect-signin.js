@@ -124,7 +124,7 @@ class OpenIDConnectSignin extends LitElement {
     `;
   }
 
-  firstUpdated(changedProperties) {
+  updated(changedProperties) {
     const settings = {
       authority: this.authority,
       client_id: this.clientId,
