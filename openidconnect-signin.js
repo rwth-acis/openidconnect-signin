@@ -132,14 +132,14 @@ class OpenIDConnectSignin extends LitElement {
       //post_logout_redirect_uri: 'http://localhost:5000/identityserver-sample.html',
       response_type: 'id_token token',
       scope: this.scope,
-      
-      popup_redirect_uri: this.popupRedirectUri,
-      popup_post_logout_redirect_uri: this.popupPostLogoutRedirectUri,
-      
-      silent_redirect_uri: this.silentRedirectUri,
+
+      popup_redirect_uri: this._pathToUri(this.popupRedirectUri),
+      popup_post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
+
+      silent_redirect_uri: this._pathToUri(this.silentRedirectUri),
       automaticSilentRenew: true,
       //silentRequestTimeout: 10000,
-  
+
       filterProtocolClaims: true,
       loadUserInfo: true
     };
@@ -162,6 +162,30 @@ class OpenIDConnectSignin extends LitElement {
     // try silent login
     this._manager.signinSilent().catch(err => {
     });
+  }
+
+  /**
+   * Completes a path to a full URI by using protocol, host and port of the current request.
+   *
+   * If path is "/my/path" and the current request is targeted at "https://example.com/app/",
+   * then this function returns "https://example.com/my/path".
+   * If in above example the path is "my/path/", then this function returns "https://example.com/app/my/path".
+   *
+   * @param path A path like "/my/path" or "my/path".
+   * @private
+   */
+  _pathToUri(path){
+    if(path.startsWith('http')){
+      return path;
+    }
+
+    if(path.startsWith('/')){
+      // the path is absolute and we need to append it after the origin part of the current location
+      return window.location.origin + path;
+    }else{
+      // the path is relative and we need to append it to the current path without the part after the last slash
+      return window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1) + path;
+    }
   }
 
   _handleClick(e) {
