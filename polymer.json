@@ -1,0 +1,20 @@
+{
+  "npm": true,
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  },
+  "entrypoint": "index.html",
+  "shell": "node_modules/@polymer/iron-component-page/iron-component-page.js",
+  "sources":[
+    "demo/*",
+    "analysis.json"
+  ],
+  "fragments": [
+    "demo/index.html",
+    "demo/popup-signin-callback.html",
+    "demo/popup-signout-callback.html",
+    "demo/silent-callback.html"
+  ]
+}

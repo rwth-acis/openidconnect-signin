@@ -10,6 +10,15 @@ import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
 
 import 'oidc-client';
 
+/**
+ * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
+ *  with OpenID APIs.
+ *
+ * @customElement
+ * @polymer
+ * @demo demo/index.html
+ *
+ */
 class OpenIDConnectSignin extends LitElement {
 
   static get properties() {
@@ -175,6 +184,7 @@ class OpenIDConnectSignin extends LitElement {
    * @private
    */
   _pathToUri(path){
+    path = path.trim();
     if(path.startsWith('http')){
       return path;
     }
