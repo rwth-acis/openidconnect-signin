@@ -3,7 +3,8 @@
   "version": "2.1.1",
   "description": "OpenID Connect Signin Button",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "polymer analyze > analysis.json && polymer build && del docs && mv build/default docs/ && del build"
   },
   "author": "István Koren",
   "license": "MIT",
@@ -13,6 +14,11 @@
     "oidc-client": "1.6.1 || >1.7.0"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "^2.2.7"
+    "@polymer/iron-component-page": "^3.0.0-pre.20",
+    "@polymer/iron-demo-helpers": "^3.0.0-pre.20",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "del-cli": "^1.1.0",
+    "move-cli": "^1.2.1",
+    "polymer-cli": "^1.9.7"
   }
 }
