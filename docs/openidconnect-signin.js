@@ -164,7 +164,9 @@ class OpenIDConnectSignin extends LitElement {
     }); // try silent login
 
 
-    this._manager.signinSilent().catch(err => {});
+    if (!this._signedIn) {
+      this._manager.signinSilent().catch(err => {});
+    }
   }
   /**
    * Completes a path to a full URI by using protocol, host and port of the current request.

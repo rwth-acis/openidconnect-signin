@@ -168,9 +168,11 @@ class OpenIDConnectSignin extends LitElement {
       console.error('error while renewing the access token', error);
     });
 
-    // try silent login
-    this._manager.signinSilent().catch(err => {
-    });
+    if(!this._signedIn){
+      // try silent login
+      this._manager.signinSilent().catch(err => {
+      });
+    }
   }
 
   /**
