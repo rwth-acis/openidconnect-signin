@@ -9,6 +9,7 @@
   "shell": "node_modules/@polymer/iron-component-page/iron-component-page.js",
   "sources":[
     "demo/*",
+    ".nojekyll",
     "analysis.json"
   ],
   "fragments": [
