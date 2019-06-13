@@ -44,6 +44,9 @@ class OpenIDConnectSignin extends LitElement {
       silentRedirectUri: {
         type: String
       },
+      useRedirect: {
+          type: Boolean
+      },
       _signedIn: {
         type: Boolean
       },
@@ -56,6 +59,7 @@ class OpenIDConnectSignin extends LitElement {
   constructor() {
     super();
     this._signedIn = false;
+    this.useRedirect = false;
   }
 
   render() {
@@ -137,8 +141,8 @@ class OpenIDConnectSignin extends LitElement {
     const settings = {
       authority: this.authority,
       client_id: this.clientId,
-      //redirect_uri: 'http://localhost:5000/identityserver-sample.html',
-      //post_logout_redirect_uri: 'http://localhost:5000/identityserver-sample.html',
+      redirect_uri: this._pathToUri(this.popupRedirectUri),
+      post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
       response_type: 'id_token token',
       scope: this.scope,
 
@@ -202,13 +206,22 @@ class OpenIDConnectSignin extends LitElement {
 
   _handleClick(e) {
     if (this._signedIn) {
-      this._manager.signoutPopup().catch(error => {
-        // could not log out, at least clear state
-        this._manager.clearStaleState();
-        this._manager.removeUser();
-      });
+      const errorHandler = ()  => {
+          // could not log out, at least clear state
+          this._manager.clearStaleState();
+          this._manager.removeUser();
+      };
+      if (this.useRedirect) {
+        this._manager.signoutRedirect().catch(errorHandler);
+      } else {
+        this._manager.signoutPopup().catch(errorHandler);
+      }
     } else {
-      this._manager.signinPopup();
+      if (this.useRedirect) {
+        this._manager.signinRedirect();
+      } else {
+        this._manager.signinPopup();
+      }
     }
   }
 
