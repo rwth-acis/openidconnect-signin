@@ -75,7 +75,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
           });
           // content of local storage
           output += "<h3>Local Storage Object</h3>";
-          // TODO!;
+          Object.entries(localStorage).forEach(key => {
+            console.log(typeof key[1]);
+            if (typeof key[0] === "string" && key[0].split('.')[0] === "oidc")
+              output += "<h4>" + key[0] + ":</h4><p>" + key[1] + "</p>";
+          });
           document.querySelector("#loginResult").innerHTML = output;
         });
         observer.disconnect();
