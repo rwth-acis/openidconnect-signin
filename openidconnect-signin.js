@@ -13,6 +13,11 @@ import 'oidc-client';
 /**
  * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
  *  with OpenID APIs.
+ *  Upon successful login a [signed-in](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched with a oidc-user-object as the `event.detail`.
+ *  The content of this object is displayed as part of the [demo](/#/elements/openidconnect-signin/demos/demo/index.html) after a successful login and can be retrieved from via the protected [_user-property](/#/elements/openidconnect-signin#property-_user).
+ *  The `profile.sub` attribute can be used to identify a user and the `access_token` can be passed as `Bearer` token within the `Authorization` header to authenticate a user against the [learning-layers API](https://api.learning-layers.eu/o/oauth2/).
+ *  Upon logout a [signed-out](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched.
+ *  The element also has the protected [_signedIn-property](/#/elements/openidconnect-signin#property-_signedIn) indicating whether a user is logged in.
  *
  * @customElement
  * @polymer

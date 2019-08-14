@@ -61,10 +61,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
           // delete OIDC User Object
           document.querySelector("#loginResult").innerHTML = "";
         });
-        // event listener to print return values after successful login
+        // event listener to print stored values after successful login
         oidElement.addEventListener('signed-in', event => {
           let output = "<h3>OIDC User Object</h3>";
           let oidcObj = document.querySelector("#loginResult").innerHTML = event.detail;
+          // return values from login procedure
           Object.keys(oidcObj).forEach(key => {
             let value = oidcObj[key];
             if (typeof value === "object")
@@ -72,6 +73,9 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
             else
               output += "<h4>" + key + "</h4><p>" + value + "</p>"
           });
+          // content of local storage
+          output += "<h3>Local Storage Object</h3>";
+          // TODO!;
           document.querySelector("#loginResult").innerHTML = output;
         });
         observer.disconnect();
