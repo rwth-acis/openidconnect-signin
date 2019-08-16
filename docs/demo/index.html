@@ -60,8 +60,10 @@ let observer = new MutationObserver(function (mutations, observer) {
         if (typeof value === "object") output += "<h4>" + key + "</h4><p>" + JSON.stringify(value, null, 2) + "</p>";else output += "<h4>" + key + "</h4><p>" + value + "</p>";
       }); // content of local storage
 
-      output += "<h3>Local Storage Object</h3>"; // TODO!;
-
+      output += "<h3>Local Storage Object</h3>";
+      Object.entries(localStorage).forEach(key => {
+        if (typeof key[0] === "string" && key[0].split('.')[0] === "oidc") output += "<h4>" + key[0] + ":</h4><p>" + key[1] + "</p>";
+      });
       document.querySelector("#loginResult").innerHTML = output;
     });
     observer.disconnect();
