@@ -28,6 +28,7 @@ import "../node_modules/@polymer/iron-demo-helpers/demo-snippet.js";</script>
       <openidconnect-signin id="signin" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi=" popup-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html"></openidconnect-signin>
     </template>
   </demo-snippet>
+  <div id="loginResult"></div>
 
   <script>/* NOTE: THIS IS ONLY NEEDED BECAUSE OF OUR WEIRD DEMO SERVER! */
 // wait for the openidconnect-signin element to appear and manipulate the logout iframe on logout
@@ -45,7 +46,25 @@ let observer = new MutationObserver(function (mutations, observer) {
       };
 
       i.src = 'https://api.learning-layers.eu/o/oauth2/logout';
-      document.body.appendChild(i);
+      document.body.appendChild(i); // delete OIDC User Object
+
+      document.querySelector("#loginResult").innerHTML = "";
+    }); // event listener to print stored values after successful login
+
+    oidElement.addEventListener('signed-in', event => {
+      let output = "<h3>OIDC User Object</h3>";
+      let oidcObj = document.querySelector("#loginResult").innerHTML = event.detail; // return values from login procedure
+
+      Object.keys(oidcObj).forEach(key => {
+        let value = oidcObj[key];
+        if (typeof value === "object") output += "<h4>" + key + "</h4><p>" + JSON.stringify(value, null, 2) + "</p>";else output += "<h4>" + key + "</h4><p>" + value + "</p>";
+      }); // content of local storage
+
+      output += "<h3>Local Storage Object</h3>";
+      Object.entries(localStorage).forEach(key => {
+        if (typeof key[0] === "string" && key[0].split('.')[0] === "oidc") output += "<h4>" + key[0] + ":</h4><p>" + key[1] + "</p>";
+      });
+      document.querySelector("#loginResult").innerHTML = output;
     });
     observer.disconnect();
   }

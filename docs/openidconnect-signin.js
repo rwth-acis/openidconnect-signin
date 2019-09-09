@@ -9,6 +9,11 @@ import "./node_modules/oidc-client/lib/oidc-client.min.js";
 /**
  * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
  *  with OpenID APIs.
+ *  Upon successful login a [signed-in](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched with a oidc-user-object as the `event.detail`.
+ *  The content of this object is displayed as part of the [demo](/#/elements/openidconnect-signin/demos/demo/index.html) after a successful login and can be retrieved via the protected [_user-property](/#/elements/openidconnect-signin#property-_user).
+ *  The `profile.sub` attribute can be used to identify a user and the `access_token` can be passed as `Bearer` token within the `Authorization` header to authenticate a user against the [learning-layers API](https://api.learning-layers.eu/o/oauth2/).
+ *  Upon logout a [signed-out](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched.
+ *  The element also has the protected [_signedIn-property](/#/elements/openidconnect-signin#property-_signedIn) indicating whether a user is logged in.
  *
  * @customElement
  * @polymer
@@ -40,6 +45,9 @@ class OpenIDConnectSignin extends LitElement {
       silentRedirectUri: {
         type: String
       },
+      useRedirect: {
+        type: Boolean
+      },
       _signedIn: {
         type: Boolean
       },
@@ -52,6 +60,7 @@ class OpenIDConnectSignin extends LitElement {
   constructor() {
     super();
     this._signedIn = false;
+    this.useRedirect = false;
   }
 
   render() {
@@ -133,8 +142,8 @@ class OpenIDConnectSignin extends LitElement {
     const settings = {
       authority: this.authority,
       client_id: this.clientId,
-      //redirect_uri: 'http://localhost:5000/identityserver-sample.html',
-      //post_logout_redirect_uri: 'http://localhost:5000/identityserver-sample.html',
+      redirect_uri: this._pathToUri(this.popupRedirectUri),
+      post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
       response_type: 'id_token token',
       scope: this.scope,
       popup_redirect_uri: this._pathToUri(this.popupRedirectUri),
@@ -198,14 +207,24 @@ class OpenIDConnectSignin extends LitElement {
 
   _handleClick(e) {
     if (this._signedIn) {
-      this._manager.signoutPopup().catch(error => {
+      const errorHandler = () => {
         // could not log out, at least clear state
         this._manager.clearStaleState();
 
         this._manager.removeUser();
-      });
+      };
+
+      if (this.useRedirect) {
+        this._manager.signoutRedirect().catch(errorHandler);
+      } else {
+        this._manager.signoutPopup().catch(errorHandler);
+      }
     } else {
-      this._manager.signinPopup();
+      if (this.useRedirect) {
+        this._manager.signinRedirect();
+      } else {
+        this._manager.signinPopup();
+      }
     }
   }
 
