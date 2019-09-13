@@ -7,7 +7,7 @@ context of your Web application in the user's browser remains the same.
 
 The element is based on lit-element.
 
-###Example
+### Example
 
 1. Install the dependency
 ```
