@@ -7,7 +7,18 @@ context of your Web application in the user's browser remains the same.
 
 The element is based on lit-element.
 
-Example:
+###Example
+
+1. Install the dependency
+```
+npm install rwth-acis/openidconnect-signin
+```
+2. Import it into your source code
+```
+import 'openidconnect-signin/openidconnect-signin.js'
+```
+3. Register an OIDC-token using the [Learning Layers Self-service](https://api.learning-layers.eu/o/oauth2/manage/dev/dynreg)
+4. Add the HTML-element with your newly created client-id
 ```
 <openidconnect-signin clientid="..." scopes="openid profile"></openidconnect-signin>
 ```
