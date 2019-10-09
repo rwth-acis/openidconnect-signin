@@ -6,7 +6,7 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 
 import {LitElement} from 'lit-element';
 
-import {UserManager} from 'oidc-client';
+import 'oidc-client';
 
 class OpenIDConnectPopupSigninCallback extends LitElement {
 

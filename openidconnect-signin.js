@@ -8,7 +8,7 @@ import {LitElement, html} from 'lit-element';
 
 import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
 
-import {UserManager} from 'oidc-client';
+import 'oidc-client';
 
 /**
  * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
