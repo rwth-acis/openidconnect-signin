@@ -11,7 +11,7 @@
   "main": "openidconnect-signin.js",
   "dependencies": {
     "lit-element": "^2.0.0",
-    "oidc-client": "1.7.2"
+    "oidc-client": "1.8.0"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^3.0.0-pre.20",
