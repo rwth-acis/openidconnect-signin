@@ -1,14 +1,12 @@
 /**
 @license
-Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
+Copyright (c) 2018-2019 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
 */
 
 import {LitElement, html} from 'lit-element';
 
 import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
-
-import 'oidc-client';
 
 /**
  * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
@@ -19,10 +17,8 @@ import 'oidc-client';
  *  Upon logout a [signed-out](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched.
  *  The element also has the protected [_signedIn-property](/#/elements/openidconnect-signin#property-_signedIn) indicating whether a user is logged in.
  *
- * @customElement
- * @polymer
+ * @customElement openidconnect-signin
  * @demo demo/index.html
- *
  */
 class OpenIDConnectSignin extends LitElement {
 
@@ -122,7 +118,7 @@ class OpenIDConnectSignin extends LitElement {
 
       <div class="button"
            @click=${this._handleClick}>
-        
+
           ${this._signedIn ? html`
             <div class="icon">
               ${signOutIcon}

@@ -7,18 +7,24 @@ context of your Web application in the user's browser remains the same.
 
 The element is based on lit-element.
 
+:warning: This is a custom branch where you need you manually import a third-party dependency (see step 2 in the following) to ensure compatibility with ES6 modules.:warning:
+
 ### Example
 
 1. Install the dependency
 ```
 npm install rwth-acis/openidconnect-signin
 ```
-2. Import it into your source code
+2. Include the third-party dependency `oidc-client` in your main index (or any HTML) file
+```
+<script src="../node_modules/oidc-client/lib/oidc-client.js"></script>
+```
+3. Import our `openidconnect-signin` element into your source code
 ```
 import 'openidconnect-signin/openidconnect-signin.js'
 ```
-3. Register an OIDC-token using the [Learning Layers Self-service](https://api.learning-layers.eu/o/oauth2/manage/dev/dynreg)
-4. Add the HTML-element with your newly created client-id
+4. Register an OIDC-token using the [Learning Layers Self-service](https://api.learning-layers.eu/o/oauth2/manage/dev/dynreg)
+5. Add the HTML-element with your newly created client-id
 ```
 <openidconnect-signin clientid="..." scopes="openid profile"></openidconnect-signin>
 ```

@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
+Copyright (c) 2018-2019 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
 -->
 
@@ -15,11 +15,12 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
+  <script src="../node_modules/oidc-client/lib/oidc-client.js"></script>
   <script type="module">
-    import '../openidconnect-popup-signin-callback.js';
+    import '../openidconnect-signin-callback.js';
   </script>
 </head>
 <body unresolved>
-  <openidconnect-popup-signin-callback></openidconnect-popup-signin-callback>
+  <openidconnect-signin-callback></openidconnect-signin-callback>
 </body>
 </html>

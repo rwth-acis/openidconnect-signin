@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
+Copyright (c) 2018-2019 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
 -->
 
@@ -14,6 +14,7 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/oidc-client/lib/oidc-client.js"></script>
 
   <script type="module">
     import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
@@ -36,9 +37,9 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
                         clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e"
                         authority="https://api.learning-layers.eu/o/oauth2"
                         providername="Layers"
-                        popupredirecturi=" popup-signin-callback.html"
-                        popuppostlogoutredirecturi="popup-signout-callback.html"
-                        silentredirecturi="silent-callback.html"></openidconnect-signin>
+                        popupredirecturi=" signin-callback.html"
+                        popuppostlogoutredirecturi="signout-callback.html"
+                        silentredirecturi="signin-callback.html"></openidconnect-signin>
     </template>
   </demo-snippet>
   <div id="loginResult"></div>
