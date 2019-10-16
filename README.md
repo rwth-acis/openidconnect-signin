@@ -7,7 +7,7 @@ context of your Web application in the user's browser remains the same.
 
 The element is based on lit-element.
 
-:warning: This is a custom branch where you need you manually import a third-party dependency (see step 2 in the following) to ensure compatibility with ES6 modules.:warning:
+:warning: This is a custom branch where you need to manually import a third-party dependency (see step 2 in the following) to ensure compatibility with ES6 modules.:warning:
 
 ### Example
 
