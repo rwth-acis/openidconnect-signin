@@ -34,9 +34,18 @@ class OpenIDConnectSignin extends LitElement {
       clientId: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signin-callback>`
+   * or `<openidconnect-redirect-signin-callback>` depending on whether redirect is used or not.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signin-callback.html) for an example.
+   */
       popupRedirectUri: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signout-callback>`.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signout-callback.html) for an example.
+   */
       popupPostLogoutRedirectUri: {
         type: String
       },
@@ -46,6 +55,10 @@ class OpenIDConnectSignin extends LitElement {
       scope: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-signin-silent-callback>`.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/silent-callback.html) for an example.
+   */
       silentRedirectUri: {
         type: String
       },
