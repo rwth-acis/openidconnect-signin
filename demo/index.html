@@ -28,27 +28,42 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 </head>
 <body unresolved>
 <div class="vertical-section-container centered">
-  <h3>Basic openidconnect-signin demo</h3>
+  <h3>Basic openidconnect-signin demo using Pop-Up</h3>
   <demo-snippet>
     <template>
-      <openidconnect-signin id="signin"
+      <openidconnect-signin id="signin_popup"
                         scope="openid profile"
                         clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e"
                         authority="https://api.learning-layers.eu/o/oauth2"
                         providername="Layers"
-                        popupredirecturi=" popup-signin-callback.html"
+                        popupredirecturi="popup-signin-callback.html"
                         popuppostlogoutredirecturi="popup-signout-callback.html"
                         silentredirecturi="silent-callback.html"></openidconnect-signin>
     </template>
   </demo-snippet>
-  <div id="loginResult"></div>
+  <h3>Basic openidconnect-signin demo using Redirect</h3>
+  <demo-snippet>
+    <template>
+      <openidconnect-signin id="signin_redirect"
+                        scope="openid profile"
+                        clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e"
+                        authority="https://api.learning-layers.eu/o/oauth2"
+                        providername="Layers"
+                        popupredirecturi="redirect-signin-callback.html"
+                        popuppostlogoutredirecturi="popup-signout-callback.html"
+                        silentredirecturi="silent-callback.html"
+			useredirect></openidconnect-signin>
+    </template>
+  </demo-snippet>
+</div>
+<div id="loginResult"></div>
 
   <script>
     /* NOTE: THIS IS ONLY NEEDED BECAUSE OF OUR WEIRD DEMO SERVER! */
     // wait for the openidconnect-signin element to appear and manipulate the logout iframe on logout
     let observer = new MutationObserver(function (mutations, observer) {
-      let oidElement = document.getElementById('signin');
-      if(oidElement){
+      let oidElements = [document.getElementById('signin_popup'),document.getElementById('signin_redirect')];
+      oidElements.forEach(oidElement => {
         oidElement.addEventListener('signed-out', e => {
           //new Image().src = 'https://api.learning-layers.eu/o/oauth2/logout';
           let i = document.createElement('iframe');
@@ -82,11 +97,10 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
           document.querySelector("#loginResult").innerHTML = output;
         });
         observer.disconnect();
-      }
+      });
     });
     let config = { attributes: true, childList: true, characterData: true };
     observer.observe(document.querySelector('demo-snippet'), config);
   </script>
-</div>
 </body>
 </html>
