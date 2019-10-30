@@ -24,7 +24,7 @@ import 'openidconnect-signin/openidconnect-signin.js'
 ```
 
 Visit the [Github pages](https://rwth-acis.github.io/openidconnect-signin) for further documentation.
-**Note**: Should the demo using redirect not work properly, you can try it out (here)[https://rwth-acis.github.io/openidconnect-signin/demo/index.html] instead.
+**Note**: Should the demo using redirect not work properly, you can try it out [here](https://rwth-acis.github.io/openidconnect-signin/demo/index.html) instead.
 
 ## Demo
 
