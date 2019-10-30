@@ -101,6 +101,14 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
     });
     let config = { attributes: true, childList: true, characterData: true };
     observer.observe(document.querySelector('demo-snippet'), config);
+
+    // the redircet demo doesn't work well from within the components page
+    if (window.location == "https://rwth-acis.github.io/openidconnect-signin/#/elements/openidconnect-signin/demos/demo/index.html") {
+      let note = document.createElement('h3');
+      note.style.color = "red";
+      note.innerHTML = "Note: If the demo using redirect should not work properly, please visit <a href='https://rwth-acis.github.io/openidconnect-signin/demo/index.html'>this page</a> and try the demo there.";
+      document.querySelector("#loginResult").appendChild(note);
+    }
   </script>
 </body>
 </html>
