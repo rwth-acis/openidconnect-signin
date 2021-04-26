@@ -316,7 +316,7 @@ OIDC.login = function(reqOptions) {
     sessionStorage['state'] = state;
     sessionStorage['nonce'] = nonce;
 
-    var response_type = 'id_token';
+    var response_type = 'id_token token';
     var scope = 'openid';
     var display = null;
     var max_age = null;
@@ -325,18 +325,6 @@ OIDC.login = function(reqOptions) {
     var userInfoClaims = {};
 
     if(reqOptions) {
-        if(reqOptions['response_type']) {
-            var parts = reqOptions['response_type'].split(' ');
-            var temp = [];
-            if(parts) {
-                for(var i = 0; i < parts.length; i++) {
-                    if(parts[i] == 'code' || parts[i] == 'token' || parts[i] == 'id_token')
-                        temp.push(parts[i]);
-                }
-            }
-            if(temp)
-                response_type = temp.join(' ');
-        }
 
         if(reqOptions['scope'])
             scope = reqOptions['scope'];
@@ -465,7 +453,7 @@ OIDC.isValidIdToken = function(idtoken) {
             if(payload['exp'] < now - (5*60))
                 throw new OidcException('ID Token expired');
 
-            if(payload['aud'][0]!= this['client_id'])
+            if(payload['aud'][0]!= this['client_id'] && payload['aud'] != this['client_id'])
                 throw new OidcException('invalid audience');
             if(payload['iss'] != this['issuer'])
                 throw new OidcException('invalid issuer ' + payload['iss'] + ' != ' + this['issuer']);
