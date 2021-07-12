@@ -10,15 +10,15 @@
   "license": "MIT",
   "main": "openidconnect-signin.js",
   "dependencies": {
-    "lit-element": "^2.0.0",
-    "oidc-client": "1.6.1"
+    "lit-element": "^2.5.1",
+    "oidc-client": "rwth-acis/oidc-client-js"
   },
   "devDependencies": {
-    "@polymer/iron-component-page": "^3.0.0-pre.20",
-    "@polymer/iron-demo-helpers": "^3.0.0-pre.20",
-    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "@polymer/iron-component-page": "^4.0.1",
+    "@polymer/iron-demo-helpers": "^3.1.0",
+    "@webcomponents/webcomponentsjs": "^2.5.0",
     "del-cli": "^1.1.0",
     "move-cli": "^1.2.1",
-    "polymer-cli": "^1.9.7"
+    "polymer-cli": "^1.9.11"
   }
 }

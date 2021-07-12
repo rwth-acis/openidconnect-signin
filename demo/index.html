@@ -71,7 +71,7 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
           i.onload = function () {
             i.parentNode.removeChild(i);
           };
-          i.src = 'https://api.learning-layers.eu/o/oauth2/logout';
+          i.src = 'https://api.learning-layers.eu/auth/realms/main/protocol/openid-connect/logout';
           document.body.appendChild(i);
           // delete OIDC User Object
           document.querySelector("#loginResult").innerHTML = "";
