@@ -22,20 +22,26 @@ import "../node_modules/@polymer/iron-demo-helpers/demo-snippet.js";</script>
 
 
 <div class="vertical-section-container centered">
-  <h3>Basic openidconnect-signin demo</h3>
+  <h3>Basic openidconnect-signin demo using Pop-Up</h3>
   <demo-snippet>
     <template>
-      <openidconnect-signin id="signin" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi=" popup-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html"></openidconnect-signin>
+      <openidconnect-signin id="signin_popup" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi="popup-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html"></openidconnect-signin>
     </template>
   </demo-snippet>
-  <div id="loginResult"></div>
+  <h3>Basic openidconnect-signin demo using Redirect</h3>
+  <demo-snippet>
+    <template>
+      <openidconnect-signin id="signin_redirect" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi="redirect-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html" useredirect=""></openidconnect-signin>
+    </template>
+  </demo-snippet>
+</div>
+<div id="loginResult"></div>
 
   <script>/* NOTE: THIS IS ONLY NEEDED BECAUSE OF OUR WEIRD DEMO SERVER! */
 // wait for the openidconnect-signin element to appear and manipulate the logout iframe on logout
 let observer = new MutationObserver(function (mutations, observer) {
-  let oidElement = document.getElementById('signin');
-
-  if (oidElement) {
+  let oidElements = [document.getElementById('signin_popup'), document.getElementById('signin_redirect')];
+  oidElements.forEach(oidElement => {
     oidElement.addEventListener('signed-out', e => {
       //new Image().src = 'https://api.learning-layers.eu/o/oauth2/logout';
       let i = document.createElement('iframe');
@@ -67,15 +73,21 @@ let observer = new MutationObserver(function (mutations, observer) {
       document.querySelector("#loginResult").innerHTML = output;
     });
     observer.disconnect();
-  }
+  });
 });
 let config = {
   attributes: true,
   childList: true,
   characterData: true
 };
-observer.observe(document.querySelector('demo-snippet'), config);</script>
-</div>
+observer.observe(document.querySelector('demo-snippet'), config); // the redircet demo doesn't work well from within the components page
+
+if (window.location == "https://rwth-acis.github.io/openidconnect-signin/#/elements/openidconnect-signin/demos/demo/index.html") {
+  let note = document.createElement('h3');
+  note.style.color = "red";
+  note.innerHTML = "Note: If the demo using redirect should not work properly, please visit <a href='https://rwth-acis.github.io/openidconnect-signin/demo/index.html'>this page</a> and try the demo there.";
+  document.querySelector("#loginResult").appendChild(note);
+}</script>
 
 
 </html>

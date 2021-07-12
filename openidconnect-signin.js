@@ -34,9 +34,18 @@ class OpenIDConnectSignin extends LitElement {
       clientId: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signin-callback>`
+   * or `<openidconnect-redirect-signin-callback>` depending on whether redirect is used or not.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signin-callback.html) for an example.
+   */
       popupRedirectUri: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signout-callback>`.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signout-callback.html) for an example.
+   */
       popupPostLogoutRedirectUri: {
         type: String
       },
@@ -46,9 +55,20 @@ class OpenIDConnectSignin extends LitElement {
       scope: {
         type: String
       },
+  /**
+   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-signin-silent-callback>`.
+   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/silent-callback.html) for an example.
+   */
       silentRedirectUri: {
         type: String
       },
+  /**
+   * If set, the login procedure works via a redirect to the learning-layers api.
+   * In that case you have to import the `<openidconnect-redirect-signin-callback>`
+   * element in the resource `popupRedirectUri` points to (instead of `<openidconnect-popup-signin-callback>`).
+   * See [redirect-signin-callback](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/redirect-signin-callback.html)
+   * for an example.
+   */
       useRedirect: {
           type: Boolean
       },
@@ -223,7 +243,7 @@ class OpenIDConnectSignin extends LitElement {
       }
     } else {
       if (this.useRedirect) {
-        this._manager.signinRedirect();
+        this._manager.signinRedirect({state:window.location.href});
       } else {
         this._manager.signinPopup();
       }
