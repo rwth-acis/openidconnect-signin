@@ -72,6 +72,14 @@ class OpenIDConnectSignin extends LitElement {
       useRedirect: {
         type: Boolean
       },
+
+      /**
+       * If set, the login uses the `Authorization Code Flow` instead of the `Implicit Flow`.
+       * This enables to request `refresh tokens`, that can be used to refresh your access token.
+       */
+      useCodeFlow: {
+        type: Boolean
+      },
       _signedIn: {
         type: Boolean
       },
@@ -85,6 +93,7 @@ class OpenIDConnectSignin extends LitElement {
     super();
     this._signedIn = false;
     this.useRedirect = false;
+    this.useCodeFlow = false;
   }
 
   render() {
@@ -168,7 +177,8 @@ class OpenIDConnectSignin extends LitElement {
       client_id: this.clientId,
       redirect_uri: this._pathToUri(this.popupRedirectUri),
       post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
-      response_type: 'id_token token',
+      response_type: this.useCodeFlow ? 'code' : 'id_token token',
+      response_mode: this.useCodeFlow ? 'fragment' : null,
       scope: this.scope,
       popup_redirect_uri: this._pathToUri(this.popupRedirectUri),
       popup_post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
@@ -239,7 +249,9 @@ class OpenIDConnectSignin extends LitElement {
       };
 
       if (this.useRedirect) {
-        this._manager.signoutRedirect().catch(errorHandler);
+        this._manager.signoutRedirect({
+          state: window.location.href
+        }).catch(errorHandler);
       } else {
         this._manager.signoutPopup().catch(errorHandler);
       }

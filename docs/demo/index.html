@@ -28,10 +28,10 @@ import "../node_modules/@polymer/iron-demo-helpers/demo-snippet.js";</script>
       <openidconnect-signin id="signin_popup" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi="popup-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html"></openidconnect-signin>
     </template>
   </demo-snippet>
-  <h3>Basic openidconnect-signin demo using Redirect</h3>
+  <h3>Basic openidconnect-signin demo using Redirect and Authorization Code Flow</h3>
   <demo-snippet>
     <template>
-      <openidconnect-signin id="signin_redirect" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi="redirect-signin-callback.html" popuppostlogoutredirecturi="popup-signout-callback.html" silentredirecturi="silent-callback.html" useredirect=""></openidconnect-signin>
+      <openidconnect-signin id="signin_redirect" scope="openid profile" clientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e" authority="https://api.learning-layers.eu/o/oauth2" providername="Layers" popupredirecturi="redirect-signin-callback.html" popuppostlogoutredirecturi="redirect-signout-callback.html" silentredirecturi="silent-callback.html" useredirect="" usecodeflow=""></openidconnect-signin>
     </template>
   </demo-snippet>
 </div>
@@ -51,7 +51,7 @@ let observer = new MutationObserver(function (mutations, observer) {
         i.parentNode.removeChild(i);
       };
 
-      i.src = 'https://api.learning-layers.eu/o/oauth2/logout';
+      i.src = 'https://api.learning-layers.eu/auth/realms/main/protocol/openid-connect/logout';
       document.body.appendChild(i); // delete OIDC User Object
 
       document.querySelector("#loginResult").innerHTML = "";
