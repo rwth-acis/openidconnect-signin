@@ -38,10 +38,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
                         providername="Layers"
                         popupredirecturi="popup-signin-callback.html"
                         popuppostlogoutredirecturi="popup-signout-callback.html"
-                        silentredirecturi="silent-callback.html"></openidconnect-signin>
+                        silentredirecturi="silent-callback.html"
+      ></openidconnect-signin>
     </template>
   </demo-snippet>
-  <h3>Basic openidconnect-signin demo using Redirect</h3>
+  <h3>Basic openidconnect-signin demo using Redirect and Authorization Code Flow</h3>
   <demo-snippet>
     <template>
       <openidconnect-signin id="signin_redirect"
@@ -50,9 +51,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
                         authority="https://api.learning-layers.eu/o/oauth2"
                         providername="Layers"
                         popupredirecturi="redirect-signin-callback.html"
-                        popuppostlogoutredirecturi="popup-signout-callback.html"
+                        popuppostlogoutredirecturi="redirect-signout-callback.html"
                         silentredirecturi="silent-callback.html"
-			useredirect></openidconnect-signin>
+			            useredirect
+                        useCodeFlow
+      ></openidconnect-signin>
     </template>
   </demo-snippet>
 </div>
