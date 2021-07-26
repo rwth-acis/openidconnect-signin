@@ -4,7 +4,7 @@ Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
 */
 
-import {LitElement, html} from 'lit-element';
+import {LitElement, html, css} from 'lit-element';
 
 import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
 
@@ -49,9 +49,6 @@ class OpenIDConnectSignin extends LitElement {
       popupPostLogoutRedirectUri: {
         type: String
       },
-      providerName: {
-        type: String
-      },
       scope: {
         type: String
       },
@@ -84,20 +81,45 @@ class OpenIDConnectSignin extends LitElement {
       },
       _user: {
         type: Object
+      },
+  // Customization of the button
+  /**
+   * If `loginButtonText` and `logoutButtonText` was not specified, here the name of the provider can be specified.
+   * This will result in the text `Sign [in using|out from] <providerName>`. If it is not specified, the button will only
+   * show `Sign [in|out]`
+   */
+      providerName: {
+          type: String
+      },
+  /**
+   * Text of the Button that is shown if the user is not logged out. If not specified, the button will show `Sign in`
+   */
+      loginButtonText: {
+          type: String
+      },
+  /**
+   * Text of the button that is shown if the user is logged in. If not specified, the button will show `Sign out`
+   */
+      logoutButtonText: {
+          type: String
+      },
+  /**
+   * Icon defined as html element that should be shown if the user logged out. If not specified, a default icon will be shown.
+   */
+      loginButtonIcon: {
+          type: String
+      },
+  /**
+   * Icon defined as html element that should be shown if the user logged in. If not specified, a default icon will be shown.
+   */
+      logoutButtonIcon: {
+          type: String
       }
     };
   }
 
-  constructor() {
-    super();
-    this._signedIn = false;
-    this.useRedirect = false;
-    this.useCodeFlow = false;
-  }
-
-  render() {
-    return html`
-      <style>
+  static get styles() {
+      return css`
         :host {
           display: inline-block;
         }
@@ -116,9 +138,9 @@ class OpenIDConnectSignin extends LitElement {
           transition: background-color .218s,border-color .218s,box-shadow .218s;
           -webkit-user-select: none;
           -webkit-appearance: none;
-          background-color: #fff;
-          background-image: none;
-          color: #262626;
+          background-color: var(--background-color, #fff);
+          background-image: var(--background-image, none);
+          color: var(--color, #262626);
           cursor: pointer;
           outline: none;
           overflow: hidden;
@@ -130,7 +152,7 @@ class OpenIDConnectSignin extends LitElement {
 
         .button:hover {
           -webkit-box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
-          box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
+          box-shadow: var(--hover-shadow, 0 0 3px 3px rgba(66,133,244,.3));
         }
 
         .icon {
@@ -146,24 +168,34 @@ class OpenIDConnectSignin extends LitElement {
           line-height: 34px;
           margin-right: 8px;
         }
-      </style>
+      `;
+  }
 
+  constructor() {
+    super();
+    this._signedIn = false;
+    this.useRedirect = false;
+    this.useCodeFlow = false;
+  }
+
+  render() {
+    return html`
       <div class="button"
            @click=${this._handleClick}>
         
           ${this._signedIn ? html`
             <div class="icon">
-              ${signOutIcon}
+              ${this.logoutButtonIcon ? html`${this.logoutButtonIcon}` : signOutIcon }
             </div>
             <span class="label">
-              Sign out${this.providerName ? html` from ${this.providerName}` : ''}
+              ${this.logoutButtonText ? this.logoutButtonText : html`Sign out${this.providerName ? html` from ${this.providerName}` : ''}`}
             </span>
           ` : html`
             <div class="icon">
-              ${openidconnectIcon}
+              ${this.loginButtonIcon ? html`${this.loginButtonIcon}` : openidconnectIcon}
             </div>
             <span class="label">
-              Sign in${this.providerName ? html` using ${this.providerName}` : ''}
+              ${this.loginButtonText ? this.loginButtonText : html`Sign in${this.providerName ? html` using ${this.providerName}` : ''}`}
             </span>
           `}
       </div>
