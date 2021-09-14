@@ -28,7 +28,7 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 </head>
 <body unresolved>
 <div class="vertical-section-container centered">
-  <h3>Basic openidconnect-signin demo using Pop-Up</h3>
+  <h3>Basic openidconnect-signin demo using Pop-Up and with custom text and icon</h3>
   <demo-snippet>
     <template>
       <openidconnect-signin id="signin_popup"
@@ -39,6 +39,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
                         popupredirecturi="popup-signin-callback.html"
                         popuppostlogoutredirecturi="popup-signout-callback.html"
                         silentredirecturi="silent-callback.html"
+                        providerName="myProvider"
+                        loginButtonText="my login text"
+                        logoutButtonText="my logout text"
+                        loginButtonIcon="http://results.learning-layers.eu/images/learning-layers.svg"
+                        logoutButtonIcon="http://results.learning-layers.eu/images/learning-layers.svg"
       ></openidconnect-signin>
     </template>
   </demo-snippet>

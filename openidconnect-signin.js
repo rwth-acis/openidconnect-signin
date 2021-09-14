@@ -180,25 +180,25 @@ class OpenIDConnectSignin extends LitElement {
 
   render() {
     return html`
-      <div class="button"
-           @click=${this._handleClick}>
-        
-          ${this._signedIn ? html`
-            <div class="icon">
-              ${this.logoutButtonIcon ? html`${this.logoutButtonIcon}` : signOutIcon }
-            </div>
-            <span class="label">
+        <div class="button"
+             @click=${this._handleClick}>
+
+            ${this._signedIn ? html`
+                <div class="icon">
+                    ${this.logoutButtonIcon ? html`<img src=${this.logoutButtonIcon} height=100% width=100%>` : signOutIcon}
+                </div>
+                <span class="label">
               ${this.logoutButtonText ? this.logoutButtonText : html`Sign out${this.providerName ? html` from ${this.providerName}` : ''}`}
             </span>
-          ` : html`
-            <div class="icon">
-              ${this.loginButtonIcon ? html`${this.loginButtonIcon}` : openidconnectIcon}
-            </div>
-            <span class="label">
+            ` : html`
+                <div class="icon">
+                    ${this.loginButtonIcon ? html`<img src=${this.loginButtonIcon} height=100% width=100%>` : openidconnectIcon}
+                </div>
+                <span class="label">
               ${this.loginButtonText ? this.loginButtonText : html`Sign in${this.providerName ? html` using ${this.providerName}` : ''}`}
             </span>
-          `}
-      </div>
+            `}
+        </div>
     `;
   }
 
