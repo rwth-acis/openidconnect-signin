@@ -17,7 +17,7 @@ npm install rwth-acis/openidconnect-signin
 ```
 import 'openidconnect-signin/openidconnect-signin.js'
 ```
-3. Register an OIDC-token using the [Learning Layers Self-service](https://api.learning-layers.eu/o/oauth2/manage/dev/dynreg)
+3. Register an OIDC User-Client at Learning Layers using the [account console](https://auth.las2peer.org/auth/realms/main/account).
 4. Add the HTML-element with your newly created client-id
 ```
 <openidconnect-signin clientid="..." scopes="openid profile"></openidconnect-signin>
