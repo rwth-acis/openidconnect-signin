@@ -10,8 +10,8 @@
   "license": "MIT",
   "main": "openidconnect-signin.js",
   "dependencies": {
-    "lit-element": "^2.5.1",
-    "oidc-client": "rwth-acis/oidc-client-js"
+    "lit": "^2.4.0",
+    "keycloak-js": "^20.0.0"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.1",

@@ -14,10 +14,6 @@
   ],
   "fragments": [
     "demo/index.html",
-    "demo/popup-signin-callback.html",
-    "demo/popup-signout-callback.html",
-    "demo/redirect-signin-callback.html",
-    "demo/redirect-signout-callback.html",
-    "demo/silent-callback.html"
+    "demo/silent-check-sso.html"
   ]
 }

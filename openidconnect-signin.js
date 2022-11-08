@@ -4,271 +4,205 @@ Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
 */
 
-import {LitElement, html} from 'lit-element';
-
+import {LitElement, html, css} from 'lit';
+import "keycloak-js/dist/keycloak.js";
 import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
 
-import 'oidc-client';
-
 /**
- * `<openidconnect-signin>` is used to authenticate with an OpenID Connect provider, allowing you to interact
- *  with OpenID APIs.
- *  Upon successful login a [signed-in](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched with a oidc-user-object as the `event.detail`.
- *  The content of this object is displayed as part of the [demo](/#/elements/openidconnect-signin/demos/demo/index.html) after a successful login and can be retrieved via the protected [_user-property](/#/elements/openidconnect-signin#property-_user).
- *  The `profile.sub` attribute can be used to identify a user and the `access_token` can be passed as `Bearer` token within the `Authorization` header to authenticate a user against the [learning-layers API](https://api.learning-layers.eu/o/oauth2/).
- *  Upon logout a [signed-out](/#/elements/OpenIDConnectSignin#method-_handleSignedIn) event is dispatched.
- *  The element also has the protected [_signedIn-property](/#/elements/openidconnect-signin#property-_signedIn) indicating whether a user is logged in.
+ * `<openidconnect-signin>` is used to authenticate with Keycloak as an OpenID Connect provider.
+ *  Upon successful login a `signed-in` event is dispatched with a json containing the user information as the `event.detail`.
+ *  Upon logout a `signed-out` event is dispatched.
+ *
+ *  The login and logout can also be triggered by the events `login` and `logout`.
+ *  By setting the HTML property `invisible`, the button will not be displayed, which is useful if you only want to interact with it by events. *
  *
  * @customElement
  * @polymer
  * @demo demo/index.html
  *
  */
-class OpenIDConnectSignin extends LitElement {
+class OpenIDConnectSignIn extends LitElement {
 
-  static get properties() {
+    static get styles() {
+        return css`
+            :host {
+              display: inline-block;
+            }
+    
+            .kc-button {
+              /* Styles (c) https://developers.google.com/identity/sign-in/web/sign-in */
+              min-width: 120px;
+              height: 36px;
+              -webkit-border-radius: 1px;
+              border-radius: 1px;
+              -webkit-box-shadow: 0 2px 4px 0px rgba(0,0,0,.25);
+              box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+              -webkit-box-sizing: border-box;
+              box-sizing: border-box;
+              -webkit-transition: background-color .218s,border-color .218s,box-shadow .218s;
+              transition: background-color .218s,border-color .218s,box-shadow .218s;
+              -webkit-user-select: none;
+              -webkit-appearance: none;
+              background-color: #fff;
+              background-image: none;
+              color: #262626;
+              cursor: pointer;
+              outline: none;
+              overflow: hidden;
+              position: relative;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+            }
+    
+            .kc-button:hover {
+              -webkit-box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
+              box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
+            }
+    
+            .icon {
+              padding: 8px;
+              width: 18px;
+              height: 18px;
+              float: left;
+            }
+    
+            .label {
+              font-family: Roboto;
+              font-size: 13px;
+              line-height: 34px;
+              margin-right: 8px;
+            }            
+        `;
+    }
+
+    render() {
+        return html`
+            <div class="kc-button" style="${this.invisible ? "display:none;" : ""}"
+                 @click=${this._handleClick}>
+
+                ${this._signedIn ? html`
+                    <div class="icon">
+                        ${signOutIcon}
+                    </div>
+                    <span class="label">
+                  Sign out from Learning Layers
+                </span>
+                ` : html`
+                    <div class="icon">
+                        ${openidconnectIcon}
+                    </div>
+                    <span class="label">
+                  Sign in using Learning Layers
+                </span>
+                `}
+            </div>
+            ${this._signedIn ? html`
+                <h5>${sessionStorage.getItem("oidc_user")}</h5>
+            ` : html`<h5>Log in and see your user information here!</h5>
+            `}
+        `;
+    }
+
+    static get properties() {
     return {
-      authority: {
-        type: String
-      },
-      clientId: {
-        type: String
-      },
-  /**
-   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signin-callback>`
-   * or `<openidconnect-redirect-signin-callback>` depending on whether redirect is used or not.
-   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signin-callback.html) for an example.
-   */
-      popupRedirectUri: {
-        type: String
-      },
-  /**
-   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-popup-signout-callback>`.
-   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/popup-signout-callback.html) for an example.
-   */
-      popupPostLogoutRedirectUri: {
-        type: String
-      },
-      providerName: {
-        type: String
-      },
-      scope: {
-        type: String
-      },
-  /**
-   * Mandatory attribute. The resource this points to only has to import the `<openidconnect-signin-silent-callback>`.
-   * See [repo](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/silent-callback.html) for an example.
-   */
-      silentRedirectUri: {
-        type: String
-      },
-  /**
-   * If set, the login procedure works via a redirect to the learning-layers api.
-   * In that case you have to import the `<openidconnect-redirect-signin-callback>`
-   * element in the resource `popupRedirectUri` points to (instead of `<openidconnect-popup-signin-callback>`).
-   * See [redirect-signin-callback](https://github.com/rwth-acis/openidconnect-signin/blob/master/demo/redirect-signin-callback.html)
-   * for an example.
-   */
-      useRedirect: {
-          type: Boolean
-      },
-  /**
-   * If set, the login uses the `Authorization Code Flow` instead of the `Implicit Flow`.
-   * This enables to request `refresh tokens`, that can be used to refresh your access token.
-   */
-      useCodeFlow: {
-        type: Boolean
-      },
-      _signedIn: {
-        type: Boolean
-      },
-      _user: {
-        type: Object
-      }
+        /**
+         * Can be set to make the HTML element invisible. You can interact with it by using the events `login` and `logout`..
+         */
+        invisible: {
+            type: Boolean,
+        },
+        /**
+         * URL of Keycloak. In out case, we have to add `/auth` to the end.
+         */
+        oidcAuthority: {
+            type: String
+        },
+        /**
+         * The realm of the OIDC client. Usually, you use `main`
+         */
+        kcRealm: {
+            type: String
+        },
+        /**
+         * The ID of your OIDC client. You can create one at the [account-console](https://auth.las2peer.org/auth/realms/main/account) of Learning-Layers
+         */
+        oidcClientId: {
+            type: String
+        },
+        _signedIn: {
+            type: Boolean
+        },
+        _keycloak: {
+            type: Object
+        }
     };
-  }
-
-  constructor() {
-    super();
-    this._signedIn = false;
-    this.useRedirect = false;
-    this.useCodeFlow = false;
-  }
-
-  render() {
-    return html`
-      <style>
-        :host {
-          display: inline-block;
-        }
-
-        .button {
-          /* Styles (c) https://developers.google.com/identity/sign-in/web/sign-in */
-          min-width: 120px;
-          height: 36px;
-          -webkit-border-radius: 1px;
-          border-radius: 1px;
-          -webkit-box-shadow: 0 2px 4px 0px rgba(0,0,0,.25);
-          box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          -webkit-transition: background-color .218s,border-color .218s,box-shadow .218s;
-          transition: background-color .218s,border-color .218s,box-shadow .218s;
-          -webkit-user-select: none;
-          -webkit-appearance: none;
-          background-color: #fff;
-          background-image: none;
-          color: #262626;
-          cursor: pointer;
-          outline: none;
-          overflow: hidden;
-          position: relative;
-          text-align: center;
-          vertical-align: middle;
-          white-space: nowrap;
-        }
-
-        .button:hover {
-          -webkit-box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
-          box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
-        }
-
-        .icon {
-          padding: 8px;
-          width: 18px;
-          height: 18px;
-          float: left;
-        }
-
-        .label {
-          font-family: Roboto;
-          font-size: 13px;
-          line-height: 34px;
-          margin-right: 8px;
-        }
-      </style>
-
-      <div class="button"
-           @click=${this._handleClick}>
-        
-          ${this._signedIn ? html`
-            <div class="icon">
-              ${signOutIcon}
-            </div>
-            <span class="label">
-              Sign out${this.providerName ? html` from ${this.providerName}` : ''}
-            </span>
-          ` : html`
-            <div class="icon">
-              ${openidconnectIcon}
-            </div>
-            <span class="label">
-              Sign in${this.providerName ? html` using ${this.providerName}` : ''}
-            </span>
-          `}
-      </div>
-    `;
-  }
-
-  updated(changedProperties) {
-    const settings = {
-      authority: this.authority,
-      client_id: this.clientId,
-      redirect_uri: this._pathToUri(this.popupRedirectUri),
-      post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
-      response_type: (this.useCodeFlow ? 'code' : 'id_token token'),
-      response_mode: (this.useCodeFlow ? 'fragment' : null ),
-      scope: this.scope,
-
-      popup_redirect_uri: this._pathToUri(this.popupRedirectUri),
-      popup_post_logout_redirect_uri: this._pathToUri(this.popupPostLogoutRedirectUri),
-
-      silent_redirect_uri: this._pathToUri(this.silentRedirectUri),
-      automaticSilentRenew: true,
-      //silentRequestTimeout: 10000,
-
-      filterProtocolClaims: true,
-      loadUserInfo: true
-    };
-    this._manager = new UserManager(settings);
-
-    this._manager.events.addUserLoaded(user => {
-      this._user = user;
-      this._handleSignedIn();
-    });
-
-    this._manager.events.addUserUnloaded(user => {
-      this._user = undefined;
-      this._handleSignedOut();
-    });
-
-    this._manager.events.addSilentRenewError(function (error) {
-      console.error('error while renewing the access token', error);
-    });
-
-    if(!this._signedIn){
-      // try silent login
-      this._manager.signinSilent().catch(err => {
-      });
-    }
-  }
-
-  /**
-   * Completes a path to a full URI by using protocol, host and port of the current request.
-   *
-   * If path is "/my/path" and the current request is targeted at "https://example.com/app/",
-   * then this function returns "https://example.com/my/path".
-   * If in above example the path is "my/path/", then this function returns "https://example.com/app/my/path".
-   *
-   * @param path A path like "/my/path" or "my/path".
-   * @private
-   */
-  _pathToUri(path){
-    path = path.trim();
-    if(path.startsWith('http')){
-      return path;
     }
 
-    if(path.startsWith('/')){
-      // the path is absolute and we need to append it after the origin part of the current location
-      return window.location.origin + path;
-    }else{
-      // the path is relative and we need to append it to the current path without the part after the last slash
-      return window.location.href.substr(0, window.location.href.lastIndexOf('/') + 1) + path;
+    constructor() {
+        super();
+        this._signedIn = false;
+        this.oidcAuthority = "https://auth.las2peer.org/auth";
+        this.kcRealm = "main";
+        this.oidcClientId = "localtestclient";
+        this.invisible = false;
+        window.addEventListener("login", () => {
+            this._keycloak.login();
+        });
+        window.addEventListener("logout", () => {
+            sessionStorage.removeItem("oidc_user");
+            sessionStorage.removeItem("access-token");
+            dispatchEvent(new CustomEvent("signed-out", {bubbles: true}));
+            this._keycloak.logout();
+        })
     }
-  }
 
-  _handleClick(e) {
-    if (this._signedIn) {
-      const errorHandler = ()  => {
-          // could not log out, at least clear state
-          this._manager.clearStaleState();
-          this._manager.removeUser();
-      };
-      if (this.useRedirect) {
-        this._manager.signoutRedirect({state:window.location.href}).catch(errorHandler);
-      } else {
-        this._manager.signoutPopup().catch(errorHandler);
-      }
-    } else {
-      if (this.useRedirect) {
-        this._manager.signinRedirect({state:window.location.href});
-      } else {
-        this._manager.signinPopup();
-      }
+    /**
+     * Triggered, whenever the element is loaded the first time. It checks if the user is already logged in and loads the user information
+     * @param _changedProperties
+     */
+    firstUpdated(_changedProperties) {
+        super.firstUpdated(_changedProperties);
+        this._keycloak = new Keycloak({
+            url: this.oidcAuthority,
+            realm: this.kcRealm,
+            clientId: this.oidcClientId
+        });
+        if (!this._signedIn) {
+            let button = this;
+            this._keycloak.init({
+                onLoad: 'check-sso',
+                silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+            }).then((authenticated) => {
+               if (authenticated) {
+                   sessionStorage.setItem("access-token", this._keycloak.token);
+                   this._keycloak.loadUserInfo().then(() => {
+                       sessionStorage.setItem("oidc_user", JSON.stringify(this._keycloak.userInfo));
+                       dispatchEvent(new CustomEvent("signed-in", {bubbles: true, detail: this._keycloak.userInfo}));
+                   })
+                   button._signedIn = true;
+               }
+               // else {
+               //     console.log("User not authenticated");
+               // }
+            });
+        }
     }
-  }
 
-  _handleSignedIn() {
-    this._signedIn = true;
-    this.dispatchEvent(new CustomEvent('signed-in', {bubbles: true, detail: this._user}));
-  }
-
-  _handleSignedOut() {
-    this._signedIn = false;
-    this.dispatchEvent(new CustomEvent('signed-out', {bubbles: true}));
-  }
+    /**
+     * Performs the button click
+     * @private
+     */
+    _handleClick() {
+        if (!this._signedIn) {
+            this._keycloak.login();
+        } else {
+            sessionStorage.removeItem("oidc_user");
+            sessionStorage.removeItem("access-token");
+            dispatchEvent(new CustomEvent("signed-out", {bubbles: true}));
+            this._keycloak.logout();
+        }
+    }
 
 }
-
-customElements.define('openidconnect-signin', OpenIDConnectSignin);
+customElements.define('openidconnect-signin', OpenIDConnectSignIn);

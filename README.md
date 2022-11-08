@@ -1,11 +1,11 @@
 openidconnect-signin
 ================
 
-<openidconnect-signin> is a custom HTML5 element that makes it really easy to login to an OpenID Connect provider. It
-displays a button that is optimized for single-page applications. It works with a popup instead of redirects, so the
-context of your Web application in the user's browser remains the same.
+**<openidconnect-signin>** is a custom HTML5 element, based on lit-element, that makes it really easy to login to our OpenID Connect provider Keycloak. It
+displays a button that is optimized for single-page applications.
 
-The element is based on lit-element.
+The button performs the login of a user, and stores the OIDC access token and the user information in the session storage. Additionally, it dispatches 
+the event `signed-in`. When logging out, the button clears the session storage and triggers the event `signed-out`.
 
 ### Example
 
@@ -20,17 +20,15 @@ import 'openidconnect-signin/openidconnect-signin.js'
 3. Register an OIDC User-Client at Learning Layers using the [account console](https://auth.las2peer.org/auth/realms/main/account).
 4. Add the HTML-element with your newly created client-id
 ```
-<openidconnect-signin clientid="..." scopes="openid profile"></openidconnect-signin>
+<openidconnect-signin oidcAuthority="https://auth.las2peer.tech4comp.dbis.rwth-aachen.de/auth" kcRealm="main" oidcClientId="your-beautiful-clientID"></openidconnect-signin>
 ```
+5. Use the HTML-element as button
+
+Instead of using the element as a button, you can also hide the element and trigger the login and logout by events. Add
+the HTML property `invisible` to the <openidconnect-signin> element and it will not be displayed anymore. By using the
+events `login` and `logout`, the button will perform the actions.
 
 Visit the [Github pages](https://rwth-acis.github.io/openidconnect-signin) for further documentation.
-**Note**: Should the demo using redirect not work properly, you can try it out [here](https://rwth-acis.github.io/openidconnect-signin/demo/index.html) instead.
-
-## Demo
-
-Either [try it out yourself](https://rwth-acis.github.io/openidconnect-signin/#/elements/openidconnect-signin/demos/demo/index.html) or enjoy this gif that was made with :heart::
-
-![openidconnect-signin in action](https://i.giphy.com/zkFD9Blr2cPxm.gif)
 
 ## Development
 
