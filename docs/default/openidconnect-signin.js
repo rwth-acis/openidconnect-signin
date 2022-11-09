@@ -95,10 +95,6 @@ class OpenIDConnectSignIn extends LitElement {
                 </span>
                 `}
             </div>
-            ${this._signedIn ? html`
-                <h5>${sessionStorage.getItem("oidc_user")}</h5>
-            ` : html`<h5>Log in and see your user information here!</h5>
-            `}
         `;
   }
 
@@ -131,6 +127,31 @@ class OpenIDConnectSignIn extends LitElement {
       oidcClientId: {
         type: String
       },
+
+      /**
+       * (Optional) The URI to which Keycloak should redirect the user after the login. Has to be set in the settings
+       * of the client. If left out, it sends the user back to the page where he came from.
+       */
+      loginRedirectUri: {
+        type: String
+      },
+
+      /**
+       * (Optional) The URI to which Keycloak should redirect the user after the logout. Has to be set in the settings
+       * of the client. If left out, it sends the user back to the page where he came from.
+       */
+      logoutRedirectUri: {
+        type: String
+      },
+
+      /**
+       * (Optional) Additional scopes that should be requested from Keycloak. Multiple scopes can be requested, by
+       * separating them with a blank, e.g. for requesting `mail` and `address`, set `oidcScope="mail address"`.
+       * The scope `openid` is always set and will also be requested, if oidcScope is left out.
+       */
+      oidcScope: {
+        type: String
+      },
       _signedIn: {
         type: Boolean
       },
@@ -147,6 +168,9 @@ class OpenIDConnectSignIn extends LitElement {
     this.kcRealm = "main";
     this.oidcClientId = "localtestclient";
     this.invisible = false;
+    this.loginRedirectUri = "";
+    this.logoutRedirectUri = "";
+    this.oidcScope = "";
     window.addEventListener("login", () => {
       this._keycloak.login();
     });
@@ -179,7 +203,8 @@ class OpenIDConnectSignIn extends LitElement {
 
       this._keycloak.init({
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+        scope: this.oidcScope
       }).then(authenticated => {
         if (authenticated) {
           sessionStorage.setItem("access-token", this._keycloak.token);
@@ -208,7 +233,10 @@ class OpenIDConnectSignIn extends LitElement {
 
   _handleClick() {
     if (!this._signedIn) {
-      this._keycloak.login();
+      this._keycloak.login({
+        redirectUri: this.loginRedirectUri,
+        scope: this.oidcScope
+      });
     } else {
       sessionStorage.removeItem("oidc_user");
       sessionStorage.removeItem("access-token");
@@ -216,7 +244,9 @@ class OpenIDConnectSignIn extends LitElement {
         bubbles: true
       }));
 
-      this._keycloak.logout();
+      this._keycloak.logout({
+        redirectUri: this.logoutRedirectUri
+      });
     }
   }
 
