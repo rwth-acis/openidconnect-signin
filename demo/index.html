@@ -60,6 +60,12 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 <!--    </template>-->
 <!--  </demo-snippet>-->
 </div>
-<div id="loginResult"></div>
+<h5 id="loginResult" style="text-align: center;">Log in and see your user information here</h5>
+<script>
+  window.addEventListener("signed-in", showUserInfo);
+  function showUserInfo(){
+    document.getElementById("loginResult").innerHTML = sessionStorage.getItem("oidc_user");
+  }
+</script>
 </body>
 </html>
