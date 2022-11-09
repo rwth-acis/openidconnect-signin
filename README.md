@@ -30,6 +30,15 @@ events `login` and `logout`, the button will perform the actions.
 
 Visit the [Github pages](https://rwth-acis.github.io/openidconnect-signin) for further documentation.
 
+### Element properties
+- `oidcAuthority`: the Domain of Keycloak. For Learning-Layers, we have to add `/auth` to it due to our Keycloak instance.
+- `kcRealm`: *(optional)* the Keycloak realm at which the OIDC client was created. For Learning-Layers, you set it to `main`, which is the default value.
+- `oidcClientId`: the ClientID of the OIDC client that you created. You can create them at the [account console](https://auth.las2peer.org/auth/realms/main/account).
+- `loginRedirectUri`: *(optional)* the URI to which the user should be redirected after a login. If left out, the user will be redirected to where he came from.
+- `logoutRedirectUri`: *(optional)* the URI to which the user should be redirected after a logout. If left out, the user will be redirected to where he came from.
+- `oidcScope`: *(optional)* scopes that should be sent in the request to Keycloak additionally to `openid`. When adding multiple scopes, they have to be seperated by a blank, e.g., `oidcScope="mail address"`.
+- `invisible`: hides the button, so that you can interact with it by using events. 
+
 ## Development
 
 Clone this project and install the dependencies.
