@@ -148,6 +148,12 @@ class OpenIDConnectSignIn extends LitElement {
         oidcScope: {
             type: String
         },
+        /**
+         * (Optional) Needed if your `silent-check-sso.html` file is not at the path "window.location.origin + '/silent-check-sso.html'"
+         */
+        silentCheckSsoUri: {
+            type: String
+        },
         _signedIn: {
             type: Boolean
         },
@@ -162,19 +168,25 @@ class OpenIDConnectSignIn extends LitElement {
         this._signedIn = false;
         this.oidcAuthority = "https://auth.las2peer.org/auth";
         this.kcRealm = "main";
+        this.silentCheckSsoUri = window.location.origin + '/silent-check-sso.html';
         this.oidcClientId = "localtestclient";
         this.invisible = false;
         this.loginRedirectUri = "";
         this.logoutRedirectUri = "";
         this.oidcScope = "";
         window.addEventListener("login", () => {
-            this._keycloak.login();
+            this._keycloak.login({
+                redirectUri: this.loginRedirectUri,
+                scope: this.oidcScope,
+            });
         });
         window.addEventListener("logout", () => {
             sessionStorage.removeItem("oidc_user");
             sessionStorage.removeItem("access-token");
             dispatchEvent(new CustomEvent("signed-out", {bubbles: true}));
-            this._keycloak.logout();
+            this._keycloak.logout({
+                redirectUri: this.logoutRedirectUri
+            });
         })
     }
 
@@ -193,7 +205,7 @@ class OpenIDConnectSignIn extends LitElement {
             let button = this;
             this._keycloak.init({
                 onLoad: 'check-sso',
-                silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+                silentCheckSsoRedirectUri: this.silentCheckSsoUri,
                 scope: this.oidcScope,
             }).then((authenticated) => {
                if (authenticated) {

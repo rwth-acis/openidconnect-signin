@@ -11,7 +11,7 @@
   "main": "openidconnect-signin.js",
   "dependencies": {
     "lit": "^2.4.0",
-    "keycloak-js": "^20.0.0"
+    "keycloak-js": "^20.0.1"
   },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.1",
