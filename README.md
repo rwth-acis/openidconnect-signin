@@ -9,6 +9,13 @@ the event `signed-in`. When logging out, the button clears the session storage a
 
 Because of reasons, the import of the Keycloak package is not working correctly in React projects. Use **<openidconnect-signin-react>** in your React project instead. 
 
+#### Important note:
+The functionality of the button mainly relies on [keycloak-js](https://www.npmjs.com/package/keycloak-js). Unfortunately, this means that the button also includes its limitations:
+
+After rendering, the button uses an iframe to check, if the user is already logged in. This "silent check-sso" makes use of 
+third-party cookies, which are (partially) blocked at some browsers. In this case, the check is done with a short redirect, 
+which leads to an additional loading of the page. More information about this problem [here](https://www.keycloak.org/docs/latest/securing_apps/#_modern_browsers).
+
 ### Element properties
 - `oidcClientId`: the ClientID of the OIDC client that you created. You can create them at the [account console](https://auth.las2peer.org/auth/realms/main/account).
 - `oidcAuthority`: *(optional)* the Domain of Keycloak. Defaults to Learning-Layers (`https://auth.las2peer.org/auth`).
