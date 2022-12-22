@@ -5,11 +5,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 */
 
 import {LitElement, html, css} from 'lit';
-import "keycloak-js/dist/keycloak.js";
+import Keycloak from "keycloak-js";
 import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
 
 /**
- * `<openidconnect-signin>` is used to authenticate with Keycloak as an OpenID Connect provider.
+ * `<openidconnect-signin-react>` is used to authenticate with Keycloak as an OpenID Connect provider in React projects.
  *  Upon successful login a `signed-in` event is dispatched with a json containing the user information as the `event.detail`.
  *  Upon logout a `signed-out` event is dispatched.
  *
@@ -21,7 +21,7 @@ import {openidconnectIcon, signOutIcon} from './openidconnect-icons.js';
  * @demo demo/index.html
  *
  */
-class OpenIDConnectSignIn extends LitElement {
+class OpenIDConnectSignInReact extends LitElement {
 
     static get styles() {
         return css`
@@ -101,66 +101,66 @@ class OpenIDConnectSignIn extends LitElement {
     }
 
     static get properties() {
-    return {
-        /**
-         * Can be set to make the HTML element invisible. You can interact with it by using the events `login` and `logout`..
-         */
-        invisible: {
-            type: Boolean,
-        },
-        /**
-         * URL of Keycloak. In out case, we have to add `/auth` to the end.
-         */
-        oidcAuthority: {
-            type: String
-        },
-        /**
-         * The realm of the OIDC client. Usually, you use `main`
-         */
-        kcRealm: {
-            type: String
-        },
-        /**
-         * The ID of your OIDC client. You can create one at the [account-console](https://auth.las2peer.org/auth/realms/main/account) of Learning-Layers
-         */
-        oidcClientId: {
-            type: String
-        },
-        /**
-         * (Optional) The URI to which Keycloak should redirect the user after the login. Has to be set in the settings
-         * of the client. If left out, it sends the user back to the page where he came from.
-         */
-        loginRedirectUri: {
-            type: String
-        },
-        /**
-         * (Optional) The URI to which Keycloak should redirect the user after the logout. Has to be set in the settings
-         * of the client. If left out, it sends the user back to the page where he came from.
-         */
-        logoutRedirectUri: {
-            type: String
-        },
-        /**
-         * (Optional) Additional scopes that should be requested from Keycloak. Multiple scopes can be requested, by
-         * separating them with a blank, e.g. for requesting `mail` and `address`, set `oidcScope="mail address"`.
-         * The scope `openid` is always set and will also be requested, if oidcScope is left out.
-         */
-        oidcScope: {
-            type: String
-        },
-        /**
-         * (Optional) Needed if your `silent-check-sso.html` file is not at the path "window.location.origin + '/silent-check-sso.html'"
-         */
-        silentCheckSsoUri: {
-            type: String
-        },
-        _signedIn: {
-            type: Boolean
-        },
-        _keycloak: {
-            type: Object
-        }
-    };
+        return {
+            /**
+             * Can be set to make the HTML element invisible. You can interact with it by using the events `login` and `logout`..
+             */
+            invisible: {
+                type: Boolean,
+            },
+            /**
+             * URL of Keycloak. In out case, we have to add `/auth` to the end.
+             */
+            oidcAuthority: {
+                type: String
+            },
+            /**
+             * The realm of the OIDC client. Usually, you use `main`
+             */
+            kcRealm: {
+                type: String
+            },
+            /**
+             * The ID of your OIDC client. You can create one at the [account-console](https://auth.las2peer.org/auth/realms/main/account) of Learning-Layers
+             */
+            oidcClientId: {
+                type: String
+            },
+            /**
+             * (Optional) The URI to which Keycloak should redirect the user after the login. Has to be set in the settings
+             * of the client. If left out, it sends the user back to the page where he came from.
+             */
+            loginRedirectUri: {
+                type: String
+            },
+            /**
+             * (Optional) The URI to which Keycloak should redirect the user after the logout. Has to be set in the settings
+             * of the client. If left out, it sends the user back to the page where he came from.
+             */
+            logoutRedirectUri: {
+                type: String
+            },
+            /**
+             * (Optional) Additional scopes that should be requested from Keycloak. Multiple scopes can be requested, by
+             * separating them with a blank, e.g. for requesting `mail` and `address`, set `oidcScope="mail address"`.
+             * The scope `openid` is always set and will also be requested, if oidcScope is left out.
+             */
+            oidcScope: {
+                type: String
+            },
+            /**
+             * (Optional) Needed if your `silent-check-sso.html` file is not at the path "window.location.origin + '/silent-check-sso.html'"
+             */
+            silentCheckSsoUri: {
+                type: String
+            },
+            _signedIn: {
+                type: Boolean
+            },
+            _keycloak: {
+                type: Object
+            }
+        };
     }
 
     constructor() {
@@ -206,7 +206,7 @@ class OpenIDConnectSignIn extends LitElement {
             this._keycloak.init({
                 onLoad: 'check-sso',
                 silentCheckSsoRedirectUri: this.silentCheckSsoUri,
-                scope: this.oidcScope,
+                scope: this.oidcScope
             }).then((authenticated) => {
                if (authenticated) {
                    sessionStorage.setItem("access-token", this._keycloak.token);
@@ -244,4 +244,4 @@ class OpenIDConnectSignIn extends LitElement {
     }
 
 }
-customElements.define('openidconnect-signin', OpenIDConnectSignIn);
+customElements.define('openidconnect-signin-react', OpenIDConnectSignInReact);

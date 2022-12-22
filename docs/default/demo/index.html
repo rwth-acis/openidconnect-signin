@@ -2,11 +2,7 @@
 @license
 Copyright (c) 2018 Advanced Community Information Systems (ACIS) Group, Chair of Computer Science 5 (Databases &
 Information Systems), RWTH Aachen University, Germany. All rights reserved.
--->
-
-<!doctype html>
-<html lang="en">
-<head>
+--><!DOCTYPE html><html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
@@ -15,27 +11,21 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-  <script type="module">
-    import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
-    import '@polymer/iron-demo-helpers/demo-snippet';
-  </script>
+  <script type="module">import "../node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js";
+import "../node_modules/@polymer/iron-demo-helpers/demo-snippet.js";</script>
 
   <script type="module" src="../openidconnect-signin.js"></script>
-  <custom-style>
+  </head><custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
   </custom-style>
-</head>
-<body unresolved>
+
+
 <div class="vertical-section-container centered">
   <h3>Basic openidconnect-signin demo for Learning Layers</h3>
   <demo-snippet>
     <template>
-      <openidconnect-signin id="signin"
-                            oidcAuthority="https://auth.las2peer.org/auth"
-                            kcRealm="main"
-                            oidcClientId="a4b3f15a-eaec-489a-af08-1dc9cf57347e"
-      ></openidconnect-signin>
+      <openidconnect-signin id="signin" oidcauthority="https://auth.las2peer.org/auth" kcrealm="main" oidcclientid="a4b3f15a-eaec-489a-af08-1dc9cf57347e"></openidconnect-signin>
     </template>
   </demo-snippet>
 <!--  <h3>Embedding openidconnect-signin button for functionality without visibility</h3>-->
@@ -61,11 +51,11 @@ Information Systems), RWTH Aachen University, Germany. All rights reserved.
 <!--  </demo-snippet>-->
 </div>
 <h5 id="loginResult" style="text-align: center;">Log in and see your user information here</h5>
-<script>
-  window.addEventListener("signed-in", showUserInfo);
-  function showUserInfo(){
-    document.getElementById("loginResult").innerHTML = sessionStorage.getItem("oidc_user");
-  }
-</script>
-</body>
+<script>window.addEventListener("signed-in", showUserInfo);
+
+function showUserInfo() {
+  document.getElementById("loginResult").innerHTML = sessionStorage.getItem("oidc_user");
+}</script>
+
+
 </html>
